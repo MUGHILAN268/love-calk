@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Calculator ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++                                               
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        p.subtitle {
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            color: #fce4ec;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            background: #ff2a5f;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 42, 95, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e01b4e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 42, 95, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result-container {
+            margin-top: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .percentage {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            margin: 10px 0;
+        }
+
+        .message {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Love Calculator ❤️</h1>
+        <p class="subtitle">Find out your true compatibility percentage!</p>
+        
+        <div class="input-group">
+            <label for="name1">Your Name</label>
+            <input type="text" id="name1" placeholder="enter your name">
+        </div>
+
+        <div class="input-group">
+            <label for="name2">Crush's Name</label>
+            <input type="text" id="name2" placeholder="enter your name">
+        </div>
+
+        <button onclick="calculateLove()">Calculate Love</button>
+
+        <div class="result-container" id="resultContainer">
+            <div class="percentage" id="lovePercentage">0%</div>
+            <div class="message" id="loveMessage">Calculating...</div>
+        </div>
+    </div>
+
+    <script>
+        function calculateLove() {
+            const name1 = document.getElementById('name1').value.trim();
+            const name2 = document.getElementById('name2').value.trim();
+            const resultContainer = document.getElementById('resultContainer');
+            const lovePercentageEl = document.getElementById('lovePercentage');
+            const loveMessageEl = document.getElementById('loveMessage');
+
+            if (name1 === "" || name2 === "") {
+                alert("Please enter both names!");
+                return;
+            }
+
+            // Generate a pseudo-random yet consistent percentage based on the combined names
+            const combined = (name1 + name2).toLowerCase();
+            let hash = 0;
+            for (let i = 0; i < combined.length; i++) {
+                hash = combined.charCodeAt(i) + ((hash << 5) - hash);
+            }
+            
+            // Generate a percentage between 40% and 100% so it's always fun/positive
+            let percentage = Math.abs(hash % 61) + 40; 
+            
+            // If they type the exact same name or special matches, give 100%
+            if (name1.toLowerCase() === name2.toLowerCase()) {
+                percentage = 100;
+            }
+
+            // Show container
+            resultContainer.style.display = "block";
+            
+            // Simple count-up effect
+            let current = 0;
+            lovePercentageEl.textContent = "0%";
+            
+            const interval = setInterval(() => {
+                if (current >= percentage) {
+                    clearInterval(interval);
+                    lovePercentageEl.textContent = percentage + "%";
+                    setLoveMessage(percentage);
+                } else {
+                    current++;
+                    lovePercentageEl.textContent = current + "%";
+                }
+            }, 20);
+        }
+
+        function setLoveMessage(score) {
+            const msgEl = document.getElementById('loveMessage');
+            if (score > 90) {
+                msgEl.textContent = "A match made in heaven! 💕💍";
+            } else if (score > 75) {
+                msgEl.textContent = "Strong chemistry! Great potential together. ✨";
+            } else if (score > 60) {
+                msgEl.textContent = "There's definitely a spark! Give it a shot. 🔥";
+            } else {
+                msgEl.textContent = "Room to grow, love takes time! 🌱";
+            }
+        }
+    </script>
+</body>
+</html>
